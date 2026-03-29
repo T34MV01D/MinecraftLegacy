@@ -7,7 +7,7 @@ import "@/css/styles.css";
 import FetchProjects from "@/utils/FetchProjects";
 
 // Pages
-import Main from "./App";
+import Main from "@/App";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
