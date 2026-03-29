@@ -1,8 +1,8 @@
 // Types
-import { IProjects } from "../types/projects";
+import { IProjects } from "@/types/projects";
 
 // Zustand
-import useReposStore from "../zustand/ReposStore";
+import useReposStore from "@/zustand/ReposStore";
 
 type ReposResponse = {
   repos: IProjects[];

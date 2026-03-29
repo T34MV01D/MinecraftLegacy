@@ -1,45 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-
 // Assets
-import dirtBg from "../assets/images/backgrounds/Dirt_background_JE1.webp";
-import endPoemBg from "../assets/images/backgrounds/End_Poem_Background_JE.webp";
-import endStoneBg from "../assets/images/backgrounds/End_Stone_background_BE2.webp";
-import portalBg from "../assets/images/backgrounds/Portal_Backgrounid_Je1.webp";
-import steveAndAlex from "../assets/images/deco/steveandalex.png";
-import technoDeco from "../assets/images/deco/techno.png";
-import codLoader from "../assets/images/loading/Cod_loading.webp";
-import gearLoader from "../assets/images/loading/Gear_loading.webp";
-import logoLarge from "../assets/images/logos/MINECRAFT LEGACY EDITION logo large.png";
-import logoMedium from "../assets/images/logos/MINECRAFT LEGACY EDITION medium.png";
-import logoSmall from "../assets/images/logos/MINECRAFT LEGACY EDITION small.png";
-import clickSoundFile from "../assets/audio/sound/click.mp3";
-import pigSoundFile from "../assets/audio/sound/pig.mp3";
-import ariaMath from "../assets/audio/music/Aria Math.mp3";
-import beginning from "../assets/audio/music/Beginning.mp3";
-import biomeFest from "../assets/audio/music/Biome Fest.mp3";
-import blindSpots from "../assets/audio/music/Blind Spots.mp3";
-import clark from "../assets/audio/music/Clark.mp3";
-import danny from "../assets/audio/music/Danny.mp3";
-import dreiton from "../assets/audio/music/Dreiton.mp3";
-import dryHands from "../assets/audio/music/Dry Hands.mp3";
-import haggstrom from "../assets/audio/music/Haggstrom.mp3";
-import hauntMuskie from "../assets/audio/music/Haunt Muskie.mp3";
-import miceOnVenus from "../assets/audio/music/Mice On Venus.mp3";
-import minecraftSong from "../assets/audio/music/Minecraft.mp3";
-import moogCity from "../assets/audio/music/Moog City 2.mp3";
-import subwooferLullaby from "../assets/audio/music/Subwoofer Lullaby.mp3";
-import sweden from "../assets/audio/music/Sweden.mp3";
-import taswell from "../assets/audio/music/Taswell.mp3";
-import wetHands from "../assets/audio/music/Wet Hands.mp3";
+import * as Assets from "@/utils/ImportAssets";
 
 // Zustand
 import useRepoStore from "@/zustand/ReposStore";
 
 const logoSet = {
-  small: logoSmall,
-  medium: logoMedium,
-  large: logoLarge
+  small: Assets.logoSmall,
+  medium: Assets.logoMedium,
+  large: Assets.logoLarge
 };
 
 const COD_EASTER_EGG_CHANCE = 0.0000003;
@@ -47,26 +17,26 @@ const MIN_LOADING_MS = 1200;
 const LOADER_FADE_MS = 420;
 
 const MUSIC_TRACKS = [
-  ariaMath,
-  beginning,
-  biomeFest,
-  blindSpots,
-  clark,
-  danny,
-  dreiton,
-  dryHands,
-  haggstrom,
-  hauntMuskie,
-  miceOnVenus,
-  minecraftSong,
-  moogCity,
-  subwooferLullaby,
-  sweden,
-  taswell,
-  wetHands
+  Assets.ariaMath,
+  Assets.beginning,
+  Assets.biomeFest,
+  Assets.blindSpots,
+  Assets.clark,
+  Assets.danny,
+  Assets.dreiton,
+  Assets.dryHands,
+  Assets.haggstrom,
+  Assets.hauntMuskie,
+  Assets.miceOnVenus,
+  Assets.minecraftSong,
+  Assets.moogCity,
+  Assets.subwooferLullaby,
+  Assets.sweden,
+  Assets.taswell,
+  Assets.wetHands
 ];
 
-const BACKGROUND_IMAGES = [dirtBg, endPoemBg, endStoneBg, portalBg];
+const BACKGROUND_IMAGES = [Assets.dirtBg, Assets.endPoemBg, Assets.endStoneBg, Assets.portalBg];
 
 function randomItem(list) {
   return list[Math.floor(Math.random() * list.length)];
@@ -90,9 +60,9 @@ function App() {
 
   const backgroundImage = useMemo(() => randomItem(BACKGROUND_IMAGES), []);
   const loadingImage = useMemo(() => {
-    return Math.random() < COD_EASTER_EGG_CHANCE ? codLoader : gearLoader;
+    return Math.random() < COD_EASTER_EGG_CHANCE ? Assets.codLoader : Assets.gearLoader;
   }, []);
-  const isCodLoadingScreen = loadingImage === codLoader;
+  const isCodLoadingScreen = loadingImage === Assets.codLoader;
 
   useEffect(() => {
     if (loading) return;
@@ -120,7 +90,7 @@ function App() {
     backgroundMusicRef.current = music;
 
     clickPoolRef.current = Array.from({ length: 5 }, () => {
-      const click = new Audio(clickSoundFile);
+      const click = new Audio(Assets.clickSoundFile);
       click.volume = 0.2;
       click.preload = "auto";
       return click;
@@ -166,7 +136,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const pig = new Audio(pigSoundFile);
+    const pig = new Audio(Assets.pigSoundFile);
     pig.volume = 0.35;
     pig.preload = "auto";
     pigAudioRef.current = pig;
@@ -227,7 +197,7 @@ function App() {
         rel="noreferrer"
         aria-label="Visit Minecraft.net"
       >
-        <img src={steveAndAlex} alt="Steve and Alex" className="top-link-image" />
+        <img src={Assets.steveAndAlex} alt="Steve and Alex" className="top-link-image" />
       </a>
 
       {showLoader && (
@@ -359,7 +329,7 @@ function App() {
         onMouseEnter={handleTechnoMouseEnter}
         onMouseLeave={handleTechnoMouseLeave}
       >
-        <img src={technoDeco} alt="Technoblade" className="techno-pig" />
+        <img src={Assets.technoDeco} alt="Technoblade" className="techno-pig" />
         <div className="techno-text">
           <p className="techno-quote">"If you wish to defeat me, train for another 100 years."</p>
           <p className="techno-attr">- Technoblade</p>
