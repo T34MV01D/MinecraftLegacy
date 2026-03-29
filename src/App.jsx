@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
+
+// Assets
 import dirtBg from "../assets/images/backgrounds/Dirt_background_JE1.webp";
 import endPoemBg from "../assets/images/backgrounds/End_Poem_Background_JE.webp";
 import endStoneBg from "../assets/images/backgrounds/End_Stone_background_BE2.webp";
@@ -30,6 +32,9 @@ import subwooferLullaby from "../assets/audio/music/Subwoofer Lullaby.mp3";
 import sweden from "../assets/audio/music/Sweden.mp3";
 import taswell from "../assets/audio/music/Taswell.mp3";
 import wetHands from "../assets/audio/music/Wet Hands.mp3";
+
+// Zustand
+import useRepoStore from "@/zustand/ReposStore";
 
 const logoSet = {
   small: logoSmall,
@@ -68,11 +73,9 @@ function randomItem(list) {
 }
 
 function App() {
-  const [repoConfig, setRepoConfig] = useState([]);
+  const { projects, loading, error } = useRepoStore();
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [loaderFadingOut, setLoaderFadingOut] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
 
@@ -90,26 +93,6 @@ function App() {
     return Math.random() < COD_EASTER_EGG_CHANCE ? codLoader : gearLoader;
   }, []);
   const isCodLoadingScreen = loadingImage === codLoader;
-
-  useEffect(() => {
-    const loadRepos = async () => {
-      try {
-        const jsonFile = window.location.hostname === "localhost" ? "placeholder.json" : "projects.json";
-        const response = await fetch(`https://raw.githubusercontent.com/MinecraftConsole/json/refs/heads/main/${jsonFile}`);
-        if (!response.ok) {
-          throw new Error(`Could not load project list (${response.status})`);
-        }
-        const data = await response.json();
-        setRepoConfig(Array.isArray(data.repos) ? data.repos : []);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error loading repos");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadRepos();
-  }, []);
 
   useEffect(() => {
     if (loading) return;
@@ -208,13 +191,13 @@ function App() {
   };
 
   const sortedRepos = useMemo(() => {
-    return [...repoConfig].sort((a, b) => {
+    return [...projects].sort((a, b) => {
       const aPriority = Number.isFinite(a.priority) ? a.priority : 9999;
       const bPriority = Number.isFinite(b.priority) ? b.priority : 9999;
       if (aPriority !== bPriority) return aPriority - bPriority;
       return String(a.name || "").localeCompare(String(b.name || ""));
     });
-  }, [repoConfig]);
+  }, [projects]);
 
   const filteredRepos = useMemo(() => {
     const normalized = query.trim().toLowerCase();
