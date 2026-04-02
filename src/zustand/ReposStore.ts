@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 // Types
-import { IProjects } from "../types/projects";
+import { IProjects } from "@/types/projects";
 
 type State = {
   loading: boolean;
