@@ -45,7 +45,7 @@ Push the built `dist/` output to your Cloudflare Pages project.
 ## Stack
 
 - React 18
-- Vite 5
+- Vite 8
 - Minecraft font (`typeface-minecraft`)
 - Cloudflare Pages
 
