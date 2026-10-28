@@ -1,0 +1,49 @@
+name: Setup Documentation Layout
+
+on:
+  workflow_dispatch: # Allows you to run this manually from the GitHub Actions tab
+
+jobs:
+  restructure-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@://github.com"
+
+      - name: Move files to docs folder
+        run: |
+          # 1. Create the docs directory if it doesn't exist
+          mkdir -p docs
+          
+          # 2. Move all files except hidden files, the docs folder itself, and the .github folder
+          shopt -s extglob
+          mv !(.|..|.git|.github|docs) docs/ 2>/dev/null || true
+
+      - name: Create ReadTheDocs configuration
+        run: |
+          cat << 'EOF' > .readthedocs.yaml
+          version: 2
+          build:
+            os: "ubuntu-22.04"
+            tools:
+              python: "3.10"
+          jobs:
+            build:
+              html:
+                # 1. Ensure the target RTD directory structure exists
+                - mkdir --parents $READTHEDOCS_OUTPUT/html/
+                # 2. Copy all your raw HTML/CSS/JS files directly to it
+                - cp --recursive docs/* $READTHEDOCS_OUTPUT/html/
+          EOF
+
+      - name: Commit and push changes
+        run: |
+          git add -A
+          git commit -m "chore: move source files to docs/ and add .readthedocs.yaml"
+          git push origin HEAD:${{ github.ref_name }}
+
